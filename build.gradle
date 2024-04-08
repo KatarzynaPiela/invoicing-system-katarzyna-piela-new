@@ -14,6 +14,7 @@ plugins {
     id 'application'
 
     id 'checkstyle'
+    id 'jacoco'
 }
 
 repositories {
@@ -31,6 +32,16 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.1-jre'
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.1'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.11.1'
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
+    implementation 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+
 }
 
 application {
@@ -48,4 +59,39 @@ checkstyle {
     ignoreFailures = false
     maxWarnings = 0
     maxErrors = 0
+
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+
+    jacoco {
+        toolVersion = "0.8.8"
+        reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
+
+        jacocoTestReport {
+            reports {
+                xml.required = false
+                csv.required = false
+                html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+
+                jacocoTestCoverageVerification {
+                    violationRules {
+                        rule {
+                            limit {
+                                counter = 'BRANCH'
+                                minimum = 0.70
+                            }
+                        }
+
+                        rule {
+                            limit {
+                                counter = 'LINE'
+                                minimum = 0.70
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
