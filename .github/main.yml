@@ -6,7 +6,7 @@ on:
   push:
     branches: [ task_*, lesson* ]
   pull_request:
-    branches: [ task_* ]
+    branches: [ task_*, lesson* ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
