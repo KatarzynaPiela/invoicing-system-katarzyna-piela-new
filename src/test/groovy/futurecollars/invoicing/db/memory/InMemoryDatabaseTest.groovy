@@ -4,7 +4,6 @@ import futurecollars.invoicing.db.Database;
 import futurecollars.invoicing.model.Invoice;
 import spock.lang.Specification;
 
-import static futurecollars.invoicing.TestHelpers.'invoice';
 
 class InMemoryDatabaseTest extends Specification {
 

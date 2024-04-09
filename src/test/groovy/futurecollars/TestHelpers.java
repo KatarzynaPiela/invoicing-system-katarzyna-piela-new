@@ -14,8 +14,8 @@ public class TestHelpers {
 
   private static Object Vat;
 
-  static void company(int id) {
-    new Company(("$id").repeat(10),
+  static Company company(int id) {
+   return new Company(("$id").repeat(10),
         "ul. Bukowińska 24d/$id 02-703 Warszawa, Polska",
         "iCode Trust $id Sp. z o.o");
   }
@@ -25,6 +25,6 @@ public class TestHelpers {
   }
 
   static void invoice(int id) {
-    new Invoice(LocalDate.now(), company(id), company(id), List.of());
+    new Invoice(id, LocalDate.now(), company(id), company(id), List.of());
   }
 }
