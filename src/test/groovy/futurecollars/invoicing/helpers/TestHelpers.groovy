@@ -1,4 +1,4 @@
-package futurecollars;
+package futurecollars.invoicing.helpers;
 
 
 import static pl.futurecollars.invoicing.db.memory.model.Vat.VAT_8;

@@ -1,6 +1,6 @@
 package futurecollars.invoicing.utils
 
-import futurecollars.TestHelpers
+import futurecollars.invoicing.helpers.TestHelpers
 import pl.futurecollars.invoicing.utils.JsonService
 import spock.lang.Specification;
 

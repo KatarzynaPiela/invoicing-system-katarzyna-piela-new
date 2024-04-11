@@ -4,7 +4,7 @@ package futurecollars.invoicing.service
 import futurecollars.invoicing.db.Database
 import spock.lang.Specification
 
-import static futurecollars.invoicing.TestHelpers.invoice
+import static futurecollars.invoicing.helpers.TestHelpers.invoice
 
 class InvoiceServiceUnitTest extends Specification {
 
