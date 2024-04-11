@@ -1,10 +1,12 @@
-package futurecollars.invoicing.model;
+package pl.futurecollars.invoicing.model;
 
 import java.time.LocalDate;
 import java.util.List;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Invoice {
 
   private int id;

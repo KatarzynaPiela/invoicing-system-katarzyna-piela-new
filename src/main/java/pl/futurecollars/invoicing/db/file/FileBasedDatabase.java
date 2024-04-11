@@ -1,83 +1,100 @@
 package pl.futurecollars.invoicing.db.file;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import pl.futurecollars.invoicing.db.Database;
-import pl.futurecollars.invoicing.db.Invoice;
-import pl.futurecollars.invoicing.utils.FileService;
+import pl.futurecollars.invoicing.model.Invoice;
+import pl.futurecollars.invoicing.utils.FilesService;
 import pl.futurecollars.invoicing.utils.JsonService;
 
 @AllArgsConstructor
 public class FileBasedDatabase implements Database {
 
-  private final FileService filesService;
-  private final JsonService jsonService;
-  private final IdService idService;
   private final Path databasePath;
+  private final IdService idService;
+  private final FilesService filesService;
+  private final JsonService jsonService;
 
   @Override
   public int save(Invoice invoice) {
-
-      invoice.setId(idService.getNextIdAndIncrement());
+    try {
+      invoice.setId(idService.getNextIdAndIncreament());
       filesService.appendLineToFile(databasePath, jsonService.toJson(invoice));
-      return invoice.getId();
 
+      return invoice.getId();
+    } catch (IOException ex) {
+      throw new RuntimeException("Database failed to save invoice", ex);
+    }
   }
 
   @Override
   public Optional<Invoice> getById(int id) {
-
+    try {
       return filesService.readAllLines(databasePath)
           .stream()
           .filter(line -> containsId(line, id))
           .map(line -> jsonService.toObject(line, Invoice.class))
           .findFirst();
-  }
-
-  private boolean containsId(String line, int id) {
-    return line.contains("\"id\":" + id + ",");
+    } catch (IOException ex) {
+      throw new FileProcessingException("Database failed to get invoice with id: " + id, ex);
+    }
   }
 
   @Override
   public List<Invoice> getAll() {
-
+    try {
       return filesService.readAllLines(databasePath)
           .stream()
           .map(line -> jsonService.toObject(line, Invoice.class))
           .collect(Collectors.toList());
-
+    } catch (IOException ex) {
+      throw new FileProcessingException("Failed to read invoices from file", ex);
+    }
   }
 
   @Override
   public void update(int id, Invoice updatedInvoice) {
-
+    try {
       List<String> allInvoices = filesService.readAllLines(databasePath);
-      var invoicesWithoutInvoiceWithGivenId = allInvoices
+      var listWithoutInvoiceWithGivenId = allInvoices
           .stream()
           .filter(line -> !containsId(line, id))
           .collect(Collectors.toList());
+
+      if (allInvoices.size() == listWithoutInvoiceWithGivenId.size()) {
+        throw new IllegalArgumentException("Id " + id + " does not exist");
+      }
+
       updatedInvoice.setId(id);
-      invoicesWithoutInvoiceWithGivenId.add(jsonService.toJson(updatedInvoice));
-      filesService.writeLinesToFile(databasePath, invoicesWithoutInvoiceWithGivenId);
-      allInvoices.removeAll(invoicesWithoutInvoiceWithGivenId);
+      listWithoutInvoiceWithGivenId.add(jsonService.toJson(updatedInvoice));
 
+      filesService.writeLinesToFile(databasePath, listWithoutInvoiceWithGivenId);
 
+    } catch (IOException ex) {
+      throw new FileProcessingException("Failed to update invoice with id: " + id, ex);
+    }
   }
 
   @Override
   public void delete(int id) {
-
-      var allInvoices = filesService.readAllLines(databasePath);
-      var invoicesExceptDeleted = allInvoices
+    try {
+      var updatedList = filesService.readAllLines(databasePath)
           .stream()
           .filter(line -> !containsId(line, id))
           .collect(Collectors.toList());
-      filesService.writeLinesToFile(databasePath, invoicesExceptDeleted);
-      allInvoices.removeAll(invoicesExceptDeleted);
 
+      filesService.writeLinesToFile(databasePath, updatedList);
 
+    } catch (IOException ex) {
+      throw new FileProcessingException("Failed to delete invoice with id: " + id, ex);
+    }
+  }
+
+  private boolean containsId(String line, int id) {
+    return line.contains("\"id\":" + id + ",");
   }
 }

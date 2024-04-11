@@ -5,4 +5,3 @@ public class JsonMappingException extends RuntimeException {
     super(message, cause);
   }
 }
-

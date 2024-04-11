@@ -23,8 +23,11 @@ public class JsonService {
   }
 
   public <T> T toObject(String json, Class<T> clazz) {
-    return null;
-
+    try {
+      return mapper.readValue(json, clazz);
+    } catch (JsonProcessingException e) {
+      throw new JsonMappingException("Failed to parse JSON", e);
+    }
   }
 
 }

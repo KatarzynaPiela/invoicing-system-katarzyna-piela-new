@@ -1,12 +1,12 @@
-package futurecollars.invoicing.db.memory;
+package pl.futurecollars.invoicing.db.memory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import futurecollars.invoicing.db.Database;
-import futurecollars.invoicing.model.Invoice;
+import pl.futurecollars.invoicing.db.Database;
+import pl.futurecollars.invoicing.model.Invoice;
 
 public class InMemoryDatabase implements Database {
 
