@@ -2,15 +2,18 @@ package pl.futurecollars.invoicing.db.file
 
 import pl.futurecollars.invoicing.db.AbstractDatabaseTest
 import pl.futurecollars.invoicing.db.Database
+import pl.futurecollars.invoicing.helpers.TestHelpers
 import pl.futurecollars.invoicing.utils.FilesService
 import pl.futurecollars.invoicing.utils.JsonService
 
-class FileBasedDatabaseTest extends AbstractDatabaseTest{
+import java.nio.file.Files
+
+class FileBasedDatabaseTest extends AbstractDatabaseTest {
 
     def dbPath
 
     @Override
-    Database getDatabaseInstance(){
+    Database getDatabaseInstance() {
         def filesService = new FilesService()
 
         def idPath = File.createTempFile("ids", ".txt").toPath()
@@ -20,10 +23,14 @@ class FileBasedDatabaseTest extends AbstractDatabaseTest{
         return FileBasedDatabase(dbPath, idService, filesService, new JsonService());
     }
 
-    def "file based database writes invoices to correct file"(){
+    def "file based database writes invoices to correct file"() {
+        given:
+        def db = getDatabaseInstance()
+        class FileBasedDatabaseIntegrationTest extends AbstractDatabaseTest {
+            db.save ( TestHelpers.invoice(5))
+            then :
+            2 == Files.readAllLines(databasePath).size()
 
-        // TO DO dokończyć
-
+        }
     }
-
 }
