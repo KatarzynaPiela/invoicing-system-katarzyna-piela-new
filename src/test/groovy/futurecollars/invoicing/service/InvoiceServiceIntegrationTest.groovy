@@ -9,6 +9,7 @@ import static futurecollars.invoicing.TestHelpers.invoice
 
 class InvoiceServiceIntegrationTest extends Specification {
 
+
   private InvoiceService service;
   private List<Invoice> invoices;
 
