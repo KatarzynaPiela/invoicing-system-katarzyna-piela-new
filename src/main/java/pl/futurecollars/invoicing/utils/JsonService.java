@@ -3,6 +3,7 @@ package pl.futurecollars.invoicing.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import pl.futurecollars.invoicing.db.file.FileProcessingException;
 
 public class JsonService {
 

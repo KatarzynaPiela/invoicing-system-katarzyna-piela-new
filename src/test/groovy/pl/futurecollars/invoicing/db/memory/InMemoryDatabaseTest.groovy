@@ -6,8 +6,8 @@ import pl.futurecollars.invoicing.db.Database
 class InMemoryDatabaseTest extends AbstractDatabaseTest {
 
     @Override
-    Database getDatabaseInstance(){
-        return InMemoryDatabase();
+    Database getDatabaseInstance() {
+        return new InMemoryDatabase()
     }
 
 }
