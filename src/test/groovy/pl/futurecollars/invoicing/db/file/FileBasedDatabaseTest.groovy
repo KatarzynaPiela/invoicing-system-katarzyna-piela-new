@@ -26,11 +26,17 @@ class FileBasedDatabaseTest extends AbstractDatabaseTest {
     def "file based database writes invoices to correct file"() {
         given:
         def db = getDatabaseInstance()
-        class FileBasedDatabaseIntegrationTest extends AbstractDatabaseTest {
-            db.save ( TestHelpers.invoice(5))
-            then :
-            2 == Files.readAllLines(databasePath).size()
 
-        }
+        when:
+        db.save ( TestHelpers.invoice(5))
+
+        then :
+        1 == Files.readAllLines(databasePath).size()
+
+        when:
+        db.save ( TestHelpers.invoice(6))
+
+        then :
+        2 == Files.readAllLines(databasePath).size()
     }
 }

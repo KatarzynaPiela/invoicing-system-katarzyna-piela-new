@@ -4,6 +4,7 @@ import pl.futurecollars.invoicing.utils.FilesService
 import spock.lang.Specification
 
 import java.nio.file.Path
+import java.nio.file.Files
 
 class IdServiceTest extends Specification{
 
@@ -23,6 +24,7 @@ class IdServiceTest extends Specification{
         3 == idService.getNextIdAndIncrement()
         ['4'] == Files.readAllLines(nextIdDbPath)
     }
+
     def "next id starts from last number if file was not empty"() {
         given:
         Files.writeString(nextIdDbPath, "17")

@@ -22,12 +22,12 @@ public class FileBasedDatabase implements Database {
   @Override
   public int save(Invoice invoice) {
     try {
-      invoice.setId(idService.getNextIdAndIncreament());
+      invoice.setId(idService.getNextIdAndIncrement());
       filesService.appendLineToFile(databasePath, jsonService.toJson(invoice));
 
       return invoice.getId();
     } catch (IOException ex) {
-      throw new RuntimeException("Database failed to save invoice", ex);
+      throw new FileProcessingException("Database failed to save invoice", ex);
     }
   }
 
