@@ -2,6 +2,7 @@ package pl.futurecollars.invoicing.service;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.http.ResponseEntity;
 import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Invoice;
 
@@ -25,12 +26,14 @@ public class InvoiceService {
     return database.getAll();
   }
 
-  public void update(int id, Invoice updatedInvoice) {
+  public ResponseEntity<Invoice> update(int id, Invoice updatedInvoice) {
     database.update(id, updatedInvoice);
+    return null;
   }
 
-  public void delete(int id) {
+  public ResponseEntity<Invoice> delete(int id) {
     database.delete(id);
+    return null;
   }
 
 }
