@@ -32,9 +32,7 @@ public class InvoiceController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Invoice> getById(@PathVariable int id) {
-    return invoiceService.getById(id)
-        .map(invoice -> ResponseEntity.ok().body(invoice))
-        .orElse(ResponseEntity.notFound().build());
+    return invoiceService.getById(id).map(invoice -> ResponseEntity.ok().body(invoice)).orElse(ResponseEntity.notFound().build());
   }
 
   @PutMapping("/{id}")
