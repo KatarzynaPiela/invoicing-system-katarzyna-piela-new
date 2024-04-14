@@ -7,19 +7,24 @@ import java.util.Map;
 import java.util.Optional;
 import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Invoice;
+
 public class InMemoryDatabase implements Database {
+
   private final Map<Integer, Invoice> invoices = new HashMap<>();
   private int nexId = 1;
+
   @Override
   public int save(Invoice invoice) {
     invoice.setId(nexId);
     invoices.put(nexId, invoice);
     return nexId++;
   }
+
   @Override
   public Optional<Invoice> getById(int id) {
     return Optional.ofNullable(invoices.get(id));
   }
+
   @Override
   public List<Invoice> getAll() {
     return new ArrayList<>(invoices.values());
