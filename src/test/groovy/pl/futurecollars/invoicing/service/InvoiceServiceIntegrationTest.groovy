@@ -70,6 +70,14 @@ class InvoiceServiceIntegrationTest extends Specification {
     }
 
     def "deleting not existing invoice is not causing any error"() {
+        given:
+        def service = new InvoiceService(new InMemoryDatabase())
+        when:
+        def deletedInvoice = service.delete(123)
+
+        then:
+        deletedInvoice == null
+        deletedInvoice == Optional.empty()
         expect:
         service.delete(123);
     }
