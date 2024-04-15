@@ -10,12 +10,15 @@ import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.utils.FilesService;
 import pl.futurecollars.invoicing.utils.JsonService;
+
 @AllArgsConstructor
 public class FileBasedDatabase implements Database {
+
   private final FilesService filesService;
   private final JsonService jsonService;
   private final IdService idService;
   private final Path databasePath;
+
   @Override
   public int save(Invoice invoice) {
     try {
@@ -26,6 +29,7 @@ public class FileBasedDatabase implements Database {
       throw new RuntimeException("Failed to save invoice: " + e.getMessage());
     }
   }
+
   @Override
   public Optional<Invoice> getById(int id) {
     try {
@@ -38,9 +42,11 @@ public class FileBasedDatabase implements Database {
       throw new RuntimeException("Database failed to get invoice with id: " + id, ex);
     }
   }
+
   private boolean containsId(String line, int id) {
     return line.contains("\"id\":" + id + ",");
   }
+
   @Override
   public List<Invoice> getAll() {
     try {

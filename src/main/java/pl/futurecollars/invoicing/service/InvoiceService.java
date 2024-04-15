@@ -26,14 +26,12 @@ public class InvoiceService {
     return database.getAll();
   }
 
-  public ResponseEntity<Invoice> update(int id, Invoice updatedInvoice) {
-    database.update(id, updatedInvoice);
-    return null;
+  public Optional<Invoice> update(int id, Invoice updatedInvoice) {
+    return database.update(id, updatedInvoice);
   }
 
-  public ResponseEntity<Invoice> delete(int id) {
-    database.delete(id);
-    return null;
+  public Optional<Invoice> delete(int id) {
+    return database.delete(id);
   }
 
 }

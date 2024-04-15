@@ -76,10 +76,7 @@ class InvoiceServiceIntegrationTest extends Specification {
         def deletedInvoice = service.delete(123)
 
         then:
-        deletedInvoice == null
         deletedInvoice == Optional.empty()
-        expect:
-        service.delete(123);
     }
 
     def "it's possible to update the invoice"() {
