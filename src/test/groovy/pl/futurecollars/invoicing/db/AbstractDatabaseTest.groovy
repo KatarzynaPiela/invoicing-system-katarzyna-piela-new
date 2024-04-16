@@ -4,7 +4,7 @@ import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
 import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
-abstract class AbstractDatabaseTest extends Specification{
+abstract class AbstractDatabaseTest extends Specification {
 
     List<Invoice> invoices = (1..12).collect { invoice(it) }
     Database database = getDatabaseInstance()
@@ -63,7 +63,7 @@ abstract class AbstractDatabaseTest extends Specification{
 
     def "deleting not existing invoice is not causing any error"() {
         expect:
-        database.delete(123);
+        database.delete(123) == Optional.empty()
     }
 
     def "it's possible to update the invoice"() {
