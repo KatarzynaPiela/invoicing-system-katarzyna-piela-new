@@ -29,6 +29,7 @@ public class InMemoryDatabase implements Database {
   public List<Invoice> getAll() {
     return new ArrayList<>(invoices.values());
   }
+
   @Override
   public Optional<Invoice> update(int id, Invoice updatedInvoice) {
     if (!invoices.containsKey(id)) {
