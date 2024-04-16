@@ -60,16 +60,6 @@ public class FileBasedDatabase implements Database {
   }
 
   @Override
-  public void update() {
-
-  }
-
-  @Override
-  public void update(int id) {
-
-  }
-
-  @Override
   public Optional<Invoice> update(int id, Invoice updatedInvoice) {
     try {
       List<String> allInvoices = filesService.readAllLines(databasePath);
@@ -91,11 +81,6 @@ public class FileBasedDatabase implements Database {
     } catch (IOException ex) {
       throw new RuntimeException("Failed to update invoice with id: " + id, ex);
     }
-  }
-
-  @Override
-  public void delete() {
-
   }
 
   @Override

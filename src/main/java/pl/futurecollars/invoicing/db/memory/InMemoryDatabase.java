@@ -30,15 +30,6 @@ public class InMemoryDatabase implements Database {
     return new ArrayList<>(invoices.values());
   }
 
-  @Override
-  public void update() {
-
-  }
-
-  @Override
-  public void update(int id) {
-
-  }
 
   @Override
   public Optional<Invoice> update(int id, Invoice updatedInvoice) {
@@ -48,11 +39,6 @@ public class InMemoryDatabase implements Database {
     updatedInvoice.setId(id);
     invoices.put(id, updatedInvoice);
     return null;
-  }
-
-  @Override
-  public void delete() {
-
   }
 
   @Override
