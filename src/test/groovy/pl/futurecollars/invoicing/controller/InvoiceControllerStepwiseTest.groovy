@@ -153,3 +153,4 @@ class InvoiceControllerStepwiseTest extends Specification {
                 .andExpect(status().isNotFound())
     }
 }
+

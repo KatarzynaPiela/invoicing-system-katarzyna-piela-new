@@ -16,3 +16,4 @@ class InvoiceApplicationTest extends Specification {
         invoiceService
     }
 }
+
