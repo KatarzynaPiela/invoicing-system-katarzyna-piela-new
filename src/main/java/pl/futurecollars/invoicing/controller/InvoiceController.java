@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.futurecollars.invoicing.db.memory.InMemoryDatabase;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.service.InvoiceService;
 
@@ -31,12 +30,12 @@ public class InvoiceController {
     return invoiceService.save(invoice);
   }
 
-  @GetMapping
+  @GetMapping(produces = { "application/json;charset=UTF-8" })
   public List<Invoice> getAll() {
     return invoiceService.getAll();
   }
 
-  @GetMapping("/{id}")
+  @GetMapping(value = "/{id}", produces = { "application/json;charset=UTF-8" })
   public ResponseEntity<Invoice> getById(@PathVariable int id) {
     return invoiceService.getById(id).map(invoice -> ResponseEntity.ok().body(invoice)).orElse(ResponseEntity.notFound().build());
   }
