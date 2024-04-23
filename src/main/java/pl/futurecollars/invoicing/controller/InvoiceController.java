@@ -50,3 +50,4 @@ public class InvoiceController {
     return invoiceService.delete(id).map(deletedInvoise -> ResponseEntity.noContent().build()).orElse(ResponseEntity.notFound().build());
   }
 }
+
