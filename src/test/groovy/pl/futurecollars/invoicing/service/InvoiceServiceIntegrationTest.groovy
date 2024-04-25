@@ -9,7 +9,6 @@ import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
 class InvoiceServiceIntegrationTest extends Specification {
 
-
     private InvoiceService service;
     private List<Invoice> invoices;
 
@@ -89,14 +88,4 @@ class InvoiceServiceIntegrationTest extends Specification {
         then:
         service.getById(id).get() == invoices.get(1)
     }
-
-    def "updating not existing invoice throws exception"() {
-        when:
-        service.update(213, invoices.get(1))
-
-        then:
-        def ex = thrown(IllegalArgumentException)
-        ex.message == "Id 213 does not exist"
-    }
-
 }

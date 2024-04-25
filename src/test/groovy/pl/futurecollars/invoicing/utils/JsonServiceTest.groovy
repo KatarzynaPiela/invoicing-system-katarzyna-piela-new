@@ -4,7 +4,6 @@ import pl.futurecollars.invoicing.helpers.TestHelpers
 import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification;
 
-
 class JsonServiceTest extends Specification {
     def "Convert Object to Json and read it back"() {
         given:
@@ -19,5 +18,16 @@ class JsonServiceTest extends Specification {
         then:
         invoiceFromJson == invoice
     }
-}
 
+    def "should throw exception when json is incorrect"() {
+        given:
+        def jsonService = new JsonService()
+        def incorrectJson = '{'
+
+        when:
+        jsonService.toObject(incorrectJson, Invoice)
+
+        then:
+        thrown(JsonMappingException)
+    }
+}
