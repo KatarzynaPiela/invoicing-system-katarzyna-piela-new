@@ -16,6 +16,9 @@ public class InvoiceEntry {
   @ApiModelProperty(value = "Product/service description", required = true, example = "Asus")
   private String description;
 
+  @ApiModelProperty(value = "Number of items", required = true, example = "85")
+  private int quantity;
+
   @ApiModelProperty(value = "Product/service netto price", required = true, example = "786")
   private BigDecimal price;
 

@@ -7,10 +7,10 @@ import pl.futurecollars.invoicing.model.Vat;
 
 import java.time.LocalDate
 
+
 class TestHelpers {
 
     static company(int id) {
-
         Company.builder()
                 .taxIdentificationNumber("$id")
                 .address("ul. Bukowinska 24d/$id 02-703 Warszawa, Polska")
@@ -19,7 +19,6 @@ class TestHelpers {
     }
 
     static product(int id) {
-
         InvoiceEntry.builder()
                 .description("Programming course $id")
                 .quantity(1)
@@ -30,7 +29,6 @@ class TestHelpers {
     }
 
     static invoice(int id) {
-
         Invoice.builder()
                 .date(LocalDate.now())
                 .buyer(company(id + 10))
@@ -39,5 +37,3 @@ class TestHelpers {
                 .build()
     }
 }
-
-
