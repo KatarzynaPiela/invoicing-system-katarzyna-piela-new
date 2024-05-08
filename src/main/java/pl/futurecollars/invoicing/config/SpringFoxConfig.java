@@ -22,7 +22,10 @@ public class SpringFoxConfig {
         .apis(RequestHandlerSelectors.basePackage("pl.futurecollars"))
         .paths(PathSelectors.any())
         .build()
-        .tags(new Tag("invocie-controller", "Controller used to list / add / update / delete invoices")
+        .tags(
+            new Tag("invocie-controller", "Controller used to list / add / update / delete invoices"),
+            new Tag("tax-controller", "Controller used to calculate taxes.")
+
         )
         .apiInfo(apiInfo());
   }
