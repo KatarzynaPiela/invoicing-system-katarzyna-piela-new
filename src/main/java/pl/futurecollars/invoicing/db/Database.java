@@ -28,3 +28,4 @@ public interface Database {
         .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 }
+
