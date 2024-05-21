@@ -43,6 +43,8 @@ public class InvoiceController implements InvoiceApi {
 
   @Override
   public ResponseEntity<?> update(@PathVariable int id, @RequestBody Invoice invoice) {
-    return invoiceService.update(id, invoice).map(name -> ResponseEntity.noContent().build()).orElse(ResponseEntity.notFound().build());
+    return invoiceService.update(id, invoice)
+        .map(name -> ResponseEntity.noContent().build())
+        .orElse(ResponseEntity.notFound().build());
   }
 }

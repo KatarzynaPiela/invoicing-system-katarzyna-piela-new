@@ -63,21 +63,19 @@ public class FileBasedDatabase implements Database {
   public Optional<Invoice> update(int id, Invoice updatedInvoice) {
     try {
       List<String> allInvoices = filesService.readAllLines(databasePath);
-      long countInvoicesWithGivenId = allInvoices.stream()
-          .filter(line -> containsId(line, id))
-          .count();
-      if (countInvoicesWithGivenId == 0) {
-        throw new IllegalArgumentException("Id " + id + " does not exist"); // Invoice doesn't exist
-      }
       var invoicesWithoutInvoiceWithGivenId = allInvoices
           .stream()
-          .filter(line -> !containsId(line, id))
+          .filter(line -> containsId(line, id))
           .collect(Collectors.toList());
+
       updatedInvoice.setId(id);
       invoicesWithoutInvoiceWithGivenId.add(jsonService.toJson(updatedInvoice));
+
       filesService.writeLinesToFile(databasePath, invoicesWithoutInvoiceWithGivenId);
+
       allInvoices.removeAll(invoicesWithoutInvoiceWithGivenId);
       return allInvoices.isEmpty() ? Optional.empty() : Optional.of(jsonService.toObject(allInvoices.get(0), Invoice.class));
+
     } catch (IOException ex) {
       throw new RuntimeException("Failed to update invoice with id: " + id, ex);
     }

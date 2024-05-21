@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +18,10 @@ import pl.futurecollars.invoicing.utils.JsonService;
 @Configuration
 public class DatabaseConfiguration {
 
-  @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "file")
   @Bean
   public IdService idService(FilesService filesService,
-                             String databaseDirectory,
-                             String idFile
+                             @Value("${invoicing-system.database.directory}") String databaseDirectory,
+                             @Value("${invoicing-system.database.id.file}") String idFile
   ) throws IOException {
     Path idFilePath = Files.createTempFile(databaseDirectory, idFile);
     return new IdService(idFilePath, filesService);
@@ -32,8 +32,8 @@ public class DatabaseConfiguration {
   public Database fileBasedDatabase(IdService idService,
                                     FilesService filesService,
                                     JsonService jsonService,
-                                    String databaseDirectory,
-                                    String invoiceFile) throws IOException {
+                                    @Value("${invoicing-system.database.directory}") String databaseDirectory,
+                                    @Value("${invoicing-system.database.invoices.file}")String invoiceFile) throws IOException {
     log.trace("Used file database - trace");
     log.debug("Used file database - debug");
     log.info("Used file database - info");
@@ -43,6 +43,7 @@ public class DatabaseConfiguration {
     return new FileBasedDatabase(filesService, jsonService, idService, databaseFilePath);
   }
 
+  @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "memory")
   @Bean
   public Database inMemoryDatabase() {
     log.info("Used InMemoryDatabase");

@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.futurecollars.invoicing.service.TaxCalculatorResult;
 
-@RequestMapping
-
+@RequestMapping("tax")
 @Api(tags = {"tax - controller"})
 public interface TaxCalculatorApi {
   @ApiOperation(value = "Get incomes, costs, vat nad taxes to pay")
