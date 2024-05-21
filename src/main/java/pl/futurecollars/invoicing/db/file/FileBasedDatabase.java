@@ -65,7 +65,7 @@ public class FileBasedDatabase implements Database {
       List<String> allInvoices = filesService.readAllLines(databasePath);
       var invoicesWithoutInvoiceWithGivenId = allInvoices
           .stream()
-          .filter(line -> containsId(line, id))
+          .filter(line -> !containsId(line, id))
           .collect(Collectors.toList());
 
       updatedInvoice.setId(id);

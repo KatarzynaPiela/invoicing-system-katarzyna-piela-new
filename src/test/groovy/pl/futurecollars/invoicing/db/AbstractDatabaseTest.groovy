@@ -2,6 +2,7 @@ package pl.futurecollars.invoicing.db
 
 import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Specification
+
 import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
 abstract class AbstractDatabaseTest extends Specification {
@@ -10,7 +11,6 @@ abstract class AbstractDatabaseTest extends Specification {
     Database database = getDatabaseInstance()
 
     abstract Database getDatabaseInstance()
-
 
     def "should save invoices returning sequential id, invoice should have id set to correct value, get by id returns saved invoice"() {
         when:
@@ -61,15 +61,15 @@ abstract class AbstractDatabaseTest extends Specification {
         database.getAll().isEmpty()
     }
 
-    def "deleting not existing invoice is not causing any error"() {
+    def "deleting not existing invoice returns optional empty"() {
         expect:
         database.delete(123) == Optional.empty()
     }
 
-    def "it's possible to update the invoice"() {
+    def "it's possible to update the invoice, original invoice is returned"() {
         given:
         def originalInvoice = invoices.get(0)
-        int id = database.save(invoices.get(0))
+        int id = database.save(originalInvoice)
 
         when:
         def result = database.update(id, invoices.get(1))
@@ -79,7 +79,7 @@ abstract class AbstractDatabaseTest extends Specification {
         result == Optional.of(originalInvoice)
     }
 
-    def "updating not existing invoice throws exception"() {
+    def "updating not existing invoice returns Optional.empty()"() {
         expect:
         database.update(213, invoices.get(1)) == Optional.empty()
     }
