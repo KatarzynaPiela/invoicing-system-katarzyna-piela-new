@@ -32,12 +32,8 @@ public class InMemoryDatabase implements Database {
 
   @Override
   public Optional<Invoice> update(int id, Invoice updatedInvoice) {
-    if (!invoices.containsKey(id)) {
-      throw new IllegalArgumentException("Id " + id + " does not exist");
-    }
     updatedInvoice.setId(id);
-    invoices.put(id, updatedInvoice);
-    return null;
+    return Optional.ofNullable(invoices.put(id, updatedInvoice));
   }
 
   @Override

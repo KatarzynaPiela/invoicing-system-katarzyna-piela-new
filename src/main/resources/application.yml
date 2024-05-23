@@ -1,0 +1,14 @@
+server:
+  port: 8888
+
+invoicing-system:
+  database: memory
+  database.directory: db
+  database.invoices.file: invoices.txt
+  database.id.file: id.txt
+  logging:
+    level:
+      pl:
+        future collars:
+          invoicing: TRACE
+          invoicing.db: DEBUG
