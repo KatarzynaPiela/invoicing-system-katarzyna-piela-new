@@ -1,6 +1,13 @@
 package pl.futurecollars.invoicing.controller.invoice
 
+import org.springframework.http.MediaType
 import pl.futurecollars.invoicing.controller.AbstractControllerTest
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
 class InvoiceControllerIntegrationTest extends AbstractControllerTest {
 
@@ -12,6 +19,7 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
     def "add invoice returns sequential id"() {
         given:
         def invoiceAsJson = invoiceAsJson(1)
+
         expect:
         def firstId = addInvoiceAndReturnId(invoiceAsJson)
         addInvoiceAndReturnId(invoiceAsJson) == firstId + 1
@@ -24,8 +32,10 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
         given:
         def numberOfInvoices = 3
         def expectedInvoices = addUniqueInvoices(numberOfInvoices)
+
         when:
         def invoices = getAllInvoices()
+
         then:
         invoices.size() == numberOfInvoices
         invoices == expectedInvoices
@@ -35,8 +45,10 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
         given:
         def expectedInvoices = addUniqueInvoices(5)
         def verifiedInvoice = expectedInvoices.get(2)
+
         when:
         def invoice = getInvoiceById(verifiedInvoice.getId())
+
         then:
         invoice == verifiedInvoice
     }
@@ -51,6 +63,7 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
         )
                 .andExpect(status().isNotFound())
 
+
         where:
         id << [-100, -2, -1, 0, 168, 1256]
     }
@@ -61,7 +74,6 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
 
         expect:
         mockMvc.perform(
-
                 delete("$INVOICE_ENDPOINT/$id")
         )
                 .andExpect(status().isNotFound())
@@ -77,11 +89,23 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
 
         expect:
         mockMvc.perform(
-
                 put("$INVOICE_ENDPOINT/$id")
                         .content(invoiceAsJson(1))
                         .contentType(MediaType.APPLICATION_JSON)
         )
+                .andExpect(status().isNotFound())
+
+
+        where:
+        id << [-100, -2, -1, 0, 12, 13, 99, 102, 1000]
+    }
+
+    def "invoice date can be modified"() {
+        given:
+        def id = addInvoiceAndReturnId(invoiceAsJson(44))
+        def updatedInvoice = invoice(123)
+        updatedInvoice.id = id
+
         expect:
         mockMvc.perform(
                 put("$INVOICE_ENDPOINT/$id")
@@ -89,15 +113,18 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isNoContent())
+
         getInvoiceById(id) == updatedInvoice
     }
 
     def "invoice can be deleted"() {
         given:
         def invoices = addUniqueInvoices(69)
+
         expect:
         invoices.each { invoice -> deleteInvoice(invoice.getId()) }
         getAllInvoices().size() == 0
     }
+
 }
 

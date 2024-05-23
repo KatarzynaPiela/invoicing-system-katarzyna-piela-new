@@ -1,8 +1,10 @@
 package pl.futurecollars.invoicing.controller.tax
 
 import pl.futurecollars.invoicing.controller.AbstractControllerTest
+import spock.lang.Unroll
 
-class TaxCalculatorControllerIntegrationTest extends AbstractControllerTest{
+@Unroll
+class TaxCalculatorControllerIntegrationTest extends AbstractControllerTest {
 
     def "zeros are returned when there are no invoices in the system"() {
         when:

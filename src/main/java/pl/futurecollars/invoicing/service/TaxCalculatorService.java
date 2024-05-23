@@ -8,8 +8,8 @@ import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.model.InvoiceEntry;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 public class TaxCalculatorService {
 
   private final Database database;
@@ -19,7 +19,7 @@ public class TaxCalculatorService {
   }
 
   public BigDecimal costs(String taxIdentificationNumber) {
-    return database.visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getVatValue);
+    return database.visit(buyerPredicate(taxIdentificationNumber), InvoiceEntry::getPrice);
   }
 
   public BigDecimal incomingVat(String taxIdentificationNumber) {
