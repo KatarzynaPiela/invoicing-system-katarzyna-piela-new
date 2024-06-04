@@ -20,11 +20,14 @@ public interface Database {
 
   Optional<Invoice> delete(int id);
 
-  default BigDecimal visit(Predicate<Invoice> invoicePredicate, Function<InvoiceEntry, BigDecimal> invoiceEntryValue) {
+  default BigDecimal visit(
+      Predicate<Invoice> invoicePredicate,
+      Function<InvoiceEntry, BigDecimal> invoiceEntryToValue
+  ) {
     return getAll().stream()
         .filter(invoicePredicate)
         .flatMap(invoice -> invoice.getEntries().stream())
-        .map(invoiceEntryValue)
+        .map(invoiceEntryToValue)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 }

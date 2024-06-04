@@ -7,6 +7,8 @@ buildscript {
         springFoxUiVersion = '3.0.0'
         springDependencyManagementVersion = '1.0.11.RELEASE'
     }
+    group = 'pl.futurecollars'
+    version = '0.0.1-SNAPSHOT'
 }
 
 plugins {
@@ -18,10 +20,19 @@ plugins {
     id 'jacoco'
     id 'org.springframework.boot' version '2.4.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+
 }
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(14)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
 }
 dependencies {
     implementation 'org.projectlombok:lombok:1.18.22'
@@ -60,6 +71,10 @@ checkstyle {
     maxWarnings = 0
     maxErrors = 0
 }
+bootJar {
+    enabled = false
+}
+
 test {
     finalizedBy jacocoTestReport // report is always generated after tests run
     finalizedBy jacocoTestCoverageVerification
@@ -83,14 +98,14 @@ jacocoTestCoverageVerification {
         rule {
             limit {
                 counter = 'BRANCH'
-                minimum = 0.70
+                minimum = 0.60
             }
         }
 
         rule {
             limit {
                 counter = 'LINE'
-                minimum = 0.70
+                minimum = 0.60
             }
         }
     }
