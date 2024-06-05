@@ -7,10 +7,11 @@ import pl.futurecollars.invoicing.utils.FilesService
 import pl.futurecollars.invoicing.utils.JsonService
 
 import java.nio.file.Files
+import java.nio.file.Path
 
 class FileBasedDatabaseTest extends AbstractDatabaseTest {
 
-    def dbPath
+    Path dbPath
 
     @Override
 
