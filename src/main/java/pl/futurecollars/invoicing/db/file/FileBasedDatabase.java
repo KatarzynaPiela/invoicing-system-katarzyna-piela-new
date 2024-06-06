@@ -25,12 +25,13 @@ public class FileBasedDatabase implements Database {
       invoice.setId(idService.getNextIdAndIncrement());
       filesService.appendLineToFile(databasePath, jsonService.toJson(invoice));
       return invoice.getId();
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to save invoice: " + e.getMessage());
+    } catch (IOException ex) {
+      throw new RuntimeException("Database failed to save invoice", ex);
     }
   }
 
   @Override
+
   public Optional<Invoice> getById(int id) {
     try {
       return filesService.readAllLines(databasePath)
@@ -43,10 +44,6 @@ public class FileBasedDatabase implements Database {
     }
   }
 
-  private boolean containsId(String line, int id) {
-    return line.contains("\"id\":" + id + ",");
-  }
-
   @Override
   public List<Invoice> getAll() {
     try {
@@ -57,6 +54,7 @@ public class FileBasedDatabase implements Database {
     } catch (IOException ex) {
       throw new RuntimeException("Failed to read invoices from file", ex);
     }
+
   }
 
   @Override
@@ -67,18 +65,16 @@ public class FileBasedDatabase implements Database {
           .stream()
           .filter(line -> !containsId(line, id))
           .collect(Collectors.toList());
-
       updatedInvoice.setId(id);
       invoicesWithoutInvoiceWithGivenId.add(jsonService.toJson(updatedInvoice));
-
       filesService.writeLinesToFile(databasePath, invoicesWithoutInvoiceWithGivenId);
-
       allInvoices.removeAll(invoicesWithoutInvoiceWithGivenId);
       return allInvoices.isEmpty() ? Optional.empty() : Optional.of(jsonService.toObject(allInvoices.get(0), Invoice.class));
-
     } catch (IOException ex) {
       throw new RuntimeException("Failed to update invoice with id: " + id, ex);
+
     }
+
   }
 
   @Override
@@ -95,5 +91,9 @@ public class FileBasedDatabase implements Database {
     } catch (IOException ex) {
       throw new RuntimeException("Failed to delete invoice with id: " + id, ex);
     }
+  }
+
+  private boolean containsId(String line, int id) {
+    return line.contains("{\"id\":" + id + ",\"number\"");
   }
 }
