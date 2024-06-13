@@ -2,23 +2,31 @@ package pl.futurecollars.invoicing.model
 
 import spock.lang.Specification
 
-class InvoiceTest extends Specification {
+class InvoiceEntryTest extends Specification {
 
-    def invoiceEntry = InvoiceEntry.builder()
-            .description("Laptop")
-            .quantity(1)
-            .price(new BigDecimal("1000.00"))
-            .vatValue(new BigDecimal("230.00"))
-            .vatRate(Vat.VAT_23).build()
+    def"should create invoice entry with provided data" () {
+        given:
+        def description = "DDDD"
+        def quantity = 5
+        def price = new BigDecimal("111.11")
+        def vatValue = new BigDecimal("5.00")
+        def vatRate = Vat.VAT_5
 
-    def invoice = Invoice.builder()
-            .date(LocalDate.now())
-            .buyer(new Company(name: "bb", taxIdentifications: "213123123"))
-            .seller(new Company(name: "bb", taxIdentifications: "213123123"))
-            .entries([invoiceEntry]).build()
+        when:
+        def invoiceEntry = new InvoiceEntry(1, description,quantity,price,vatValue,vatRate, new Car())
 
+        then:
+        invoiceEntry.description == description
+        invoiceEntry.quantity == quantity
+        invoiceEntry.netPrice == price
+        invoiceEntry.vatValue == vatValue
+        invoiceEntry.vatRate == vatRate
+    }
+    def"should create invoice with default constructor" () {
+        when:
+        def invoiceEntry = new InvoiceEntry()
+        then:
+        invoiceEntry != null
+    }
 }
-
-
-
 

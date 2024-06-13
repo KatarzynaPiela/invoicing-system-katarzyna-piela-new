@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 7777
 
 logging:
   level:
@@ -16,3 +16,11 @@ spring:
     active: memory
   flyway:
     enabled: false
+
+invoicing-system.database: file
+
+invoicing-system:
+  database: file
+  database.directory: db
+  database.invoices.file: invoices.txt
+  database.id.file: id.txt

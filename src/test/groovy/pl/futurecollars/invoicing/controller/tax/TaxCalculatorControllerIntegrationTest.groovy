@@ -161,6 +161,7 @@ class TaxCalculatorControllerIntegrationTest extends AbstractControllerTest {
                 .buyer(company(2))
                 .entries(List.of(
                         InvoiceEntry.builder()
+                                .vatValue(BigDecimal.valueOf(23.45))
                                 .netPrice(76011.62)
                                 .build()
                 ))
@@ -171,6 +172,7 @@ class TaxCalculatorControllerIntegrationTest extends AbstractControllerTest {
                 .buyer(ourCompany)
                 .entries(List.of(
                         InvoiceEntry.builder()
+                                .vatValue(BigDecimal.valueOf(23.45))
                                 .netPrice(11329.47)
                                 .build()
                 ))
@@ -196,8 +198,8 @@ class TaxCalculatorControllerIntegrationTest extends AbstractControllerTest {
             incomeTaxMinusHealthInsurance == 11916.42
             finalIncomeTax == 11916
 
-            collectedVat == 0
-            paidVat == 0
+            collectedVat == 23.45
+            paidVat == 23.45
             vatToReturn == 0
         }
     }
