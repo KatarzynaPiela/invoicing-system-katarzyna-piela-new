@@ -1,14 +1,26 @@
 server:
-  port: 8888
+  port: 7777
+
+logging:
+  level:
+    org:
+      springframework:
+        boot: INFO
+    pl:
+      futurecollars:
+        invoicing: INFO
+        invoicing.db: DEBUG
+
+spring:
+  profiles:
+    active: memory
+  flyway:
+    enabled: false
+
+invoicing-system.database: file
 
 invoicing-system:
-  database: memory
+  database: file
   database.directory: db
   database.invoices.file: invoices.txt
   database.id.file: id.txt
-  logging:
-    level:
-      pl:
-        future collars:
-          invoicing: TRACE
-          invoicing.db: DEBUG

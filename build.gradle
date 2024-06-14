@@ -6,6 +6,7 @@ buildscript {
         springFoxStarterVersion = '3.0.0'
         springFoxUiVersion = '3.0.0'
         springDependencyManagementVersion = '1.0.11.RELEASE'
+        flywayVersion = '7.6.0'
     }
     group = 'pl.futurecollars'
     version = '0.0.1-SNAPSHOT'
@@ -56,6 +57,11 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok:1.18.22")
     compileOnly("org.projectlombok:lombok:1.18.22")
     testCompileOnly("org.projectlombok:lombok:1.18.22")
+
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly 'org.postgresql:postgresql:42.2.19'
+    runtimeOnly 'com.h2database:h2:1.4.200'
+    implementation "org.flywaydb:flyway-core:7.6.0"
 }
 application {
     // Define the main class for the application.

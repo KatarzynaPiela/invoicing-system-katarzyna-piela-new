@@ -5,17 +5,16 @@ import java.nio.file.Path;
 import java.util.List;
 import pl.futurecollars.invoicing.utils.FilesService;
 
-public class IdService {
+public class IdProvider {
 
   private final Path idFilePath;
   private final FilesService filesService;
 
   private int nextId = 1;
 
-  public IdService(Path idFilePath, FilesService filesService) {
+  public IdProvider(Path idFilePath, FilesService fileService) {
     this.idFilePath = idFilePath;
-    this.filesService = filesService;
-
+    this.filesService = fileService;
     try {
       List<String> lines = filesService.readAllLines(idFilePath);
       if (lines.isEmpty()) {
@@ -24,18 +23,16 @@ public class IdService {
         nextId = Integer.parseInt(lines.get(0));
       }
     } catch (IOException ex) {
-      throw new FileProcessingException("Failed to initialize id database", ex);
+      throw new RuntimeException("Failed to initialize id database", ex);
     }
-
   }
 
   public int getNextIdAndIncrement() {
     try {
       filesService.writeToFile(idFilePath, String.valueOf(nextId + 1));
       return nextId++;
-    } catch (IOException ex) {
-      throw new FileProcessingException("Failed to read id file", ex);
+    } catch (IOException e) {
+      throw new RuntimeException("Failed to save last id file: " + e.getMessage());
     }
   }
-
 }

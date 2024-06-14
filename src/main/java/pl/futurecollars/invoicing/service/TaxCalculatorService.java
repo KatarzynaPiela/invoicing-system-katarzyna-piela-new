@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Optional;
 import java.util.function.Predicate;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Car;
@@ -12,13 +13,10 @@ import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.model.InvoiceEntry;
 
 @Service
+@AllArgsConstructor
 public class TaxCalculatorService {
 
   private final Database database;
-
-  public TaxCalculatorService(Database database) {
-    this.database = database;
-  }
 
   public BigDecimal income(String taxIdentificationNumber) {
     return database.visit(sellerPredicate(taxIdentificationNumber), InvoiceEntry::getNetPrice);
@@ -100,4 +98,3 @@ public class TaxCalculatorService {
     return invoice -> taxIdentificationNumber.equals(invoice.getBuyer().getTaxIdentificationNumber());
   }
 }
-
