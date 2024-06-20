@@ -9,7 +9,6 @@ import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
 class InvoiceServiceIntegrationTest extends Specification {
 
-
     private InvoiceService service
     private List<Invoice> invoices
 
@@ -22,20 +21,19 @@ class InvoiceServiceIntegrationTest extends Specification {
 
     def "should save invoices returning sequential id, invoice should have id set to correct value, get by id returns saved invoice"() {
         when:
-        def ids = invoices.collect({ service.save(it) })
+        def ids = invoices.collect { service.save(it) }
 
         then:
         ids == (1..invoices.size()).collect()
-        ids.forEach({ assert service.getById(it).isPresent() })
-        ids.forEach({ assert service.getById(it).get().getId() == it })
-        ids.forEach({ assert service.getById(it).get() == invoices.get(it - 1) })
+        ids.forEach { assert service.getById(it).isPresent() }
+        ids.forEach { assert service.getById(it).get().getId() == it }
+        ids.forEach { assert service.getById(it).get() == invoices.get(it - 1) }
     }
 
     def "get by id returns empty optional when there is no invoice with given id"() {
         expect:
         !service.getById(1).isPresent()
     }
-
     def "get all returns empty collection if there were no invoices"() {
         expect:
         service.getAll().isEmpty()
@@ -43,56 +41,47 @@ class InvoiceServiceIntegrationTest extends Specification {
 
     def "get all returns all invoices in the database, deleted invoice is not returned"() {
         given:
-        invoices.forEach({ service.save(it) })
+        invoices.forEach { service.save(it) }
 
         expect:
         service.getAll().size() == invoices.size()
-        service.getAll().forEach({ assert it == invoices.get(it.getId() - 1) })
+        service.getAll().forEach { assert it == invoices.get(it.getId() - 1) }
 
         when:
         service.delete(1)
 
         then:
         service.getAll().size() == invoices.size() - 1
-        service.getAll().forEach({ assert it == invoices.get(it.getId() - 1) })
-        service.getAll().forEach({ assert it.getId() != 1 })
+        service.getAll().forEach { assert it == invoices.get(it.getId() - 1) }
+        service.getAll().forEach { assert it.getId() != 1 }
     }
 
     def "can delete all invoices"() {
         given:
-        invoices.forEach({ service.save(it) })
+        invoices.forEach { service.save(it) }
 
         when:
-        invoices.forEach({ service.delete(it.getId()) })
+        invoices.forEach { service.delete(it.getId()) }
 
         then:
         service.getAll().isEmpty()
     }
-
-    def "deleting not existing invoice is not causing any error"() {
-        given:
-        def service = new InvoiceService(new InMemoryDatabase())
-        when:
-        def deletedInvoice = service.delete(123)
-
-        then:
-        deletedInvoice == Optional.empty()
+    def "deleting not existing invoice returns Optional.empty()"() {
+        expect:
+        service.delete(123) == Optional.empty()
     }
-
-    def "it's possible to update the invoice"() {
+    def "it's possible to update the invoice, previous invoice is returned"() {
         given:
-        int id = service.save(invoices.get(0))
-
+        def originalInvoice = invoices.get(0)
+        int id = service.save(originalInvoice)
         when:
-        service.update(id, invoices.get(1))
-
+        def result = service.update(id, invoices.get(1))
         then:
         service.getById(id).get() == invoices.get(1)
+        result == Optional.of(originalInvoice)
     }
-
-    def "updating not existing invoice throws exception"() {
+    def "updating not existing invoice returns Optional.empty()"() {
         expect:
         service.update(213, invoices.get(1)) == Optional.empty()
     }
-
 }

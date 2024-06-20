@@ -12,15 +12,7 @@ logging:
         invoicing.db: DEBUG
 
 spring:
-  profiles:
-    active: memory
-  flyway:
-    enabled: false
-
-invoicing-system.database: file
-
-invoicing-system:
-  database: file
-  database.directory: db
-  database.invoices.file: invoices.txt
-  database.id.file: id.txt
+    profiles:
+      active: sql
+    flyway:
+      enable: false
