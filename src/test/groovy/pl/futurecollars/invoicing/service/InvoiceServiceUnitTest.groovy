@@ -57,6 +57,7 @@ class InvoiceServiceUnitTest extends Specification {
 
         given:
         def invoice = invoice(1)
+        invoice.id = 1
         when:
         service.update(invoice.getId(), invoice)
         then:
