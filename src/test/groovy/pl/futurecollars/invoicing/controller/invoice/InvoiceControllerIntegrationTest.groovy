@@ -12,11 +12,11 @@ import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 
 @Unroll
 class InvoiceControllerIntegrationTest extends AbstractControllerTest {
-    def  "empty array is returned when no invoices were added"() {
+
+    def "empty array is returned when no invoices were added"() {
         expect:
         getAllInvoices() == []
     }
-
     def "add invoice returns sequential id"() {
         expect:
         def firstId = addInvoiceAndReturnId(invoice(1))
@@ -25,31 +25,25 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
         addInvoiceAndReturnId(invoice(4)) == firstId + 3
         addInvoiceAndReturnId(invoice(5)) == firstId + 4
     }
-
     def "all invoices are returned when getting all invoices"() {
         given:
         def numberOfInvoices = 3
         def expectedInvoices = addUniqueInvoices(numberOfInvoices)
-
         when:
         def invoices = getAllInvoices()
         then:
         invoices.size() == numberOfInvoices
         invoices == expectedInvoices
     }
-
     def "correct invoice is returned when getting by id"() {
         given:
         def expectedInvoices = addUniqueInvoices(5)
         def expectedInvoice = expectedInvoices.get(2)
-
         when:
         def invoice = getInvoiceById(expectedInvoice.getId())
-
         then:
         invoice == expectedInvoice
     }
-
     def "404 is returned when invoice id is not found when getting invoice by id [#id]"() {
         given:
         addUniqueInvoices(11)
@@ -58,8 +52,6 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
                 get("$INVOICE_ENDPOINT/$id")
         )
                 .andExpect(status().isNotFound())
-
-
         where:
         id << [-100, -2, -1, 0, 168, 1256]
     }
@@ -71,8 +63,6 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
                 delete("$INVOICE_ENDPOINT/$id")
         )
                 .andExpect(status().isNotFound())
-
-
         where:
         id << [-100, -2, -1, 0, 12, 13, 99, 102, 1000]
     }
@@ -86,34 +76,34 @@ class InvoiceControllerIntegrationTest extends AbstractControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isNotFound())
-
-
         where:
         id << [-100, -2, -1, 0, 12, 13, 99, 102, 1000]
     }
 
-        def "invoice can be modified"() {
-            given:
-            def id = addInvoiceAndReturnId(invoice(4))
-            def updatedInvoice = invoice(1)
-            updatedInvoice.id = id
-            expect:
-            mockMvc.perform(
-                    put("$INVOICE_ENDPOINT/$id")
-                            .content(jsonService.toJson(updatedInvoice))
-                            .contentType(MediaType.APPLICATION_JSON)
-            )
-                    .andExpect(status().isNoContent())
-            def invoiceFromDbAfterUpdate = getInvoiceById(id).toString()
-            def expectedInvoice = updatedInvoice.toString()
-            invoiceFromDbAfterUpdate == expectedInvoice
-        }
-        def "invoice can be deleted"() {
-            given:
-            def invoices = addUniqueInvoices(69)
-            expect:
-            invoices.each { invoice -> deleteInvoice(invoice.getId()) }
-            getAllInvoices().size() == 0
-        }
+    def "invoice can be modified"() {
+        given:
+        def id = addInvoiceAndReturnId(invoice(4))
+        def updatedInvoice = invoice(1)
+        updatedInvoice.id = id
+
+        expect:
+        mockMvc.perform(
+                put("$INVOICE_ENDPOINT/$id")
+                        .content(jsonService.toJson(updatedInvoice))
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isNoContent())
+
+        def invoiceFromDbAfterUpdate = getInvoiceById(id).toString()
+        def expectedInvoice = updatedInvoice.toString()
+        invoiceFromDbAfterUpdate == expectedInvoice
     }
 
+    def "invoice can be deleted"() {
+        given:
+        def invoices = addUniqueInvoices(69)
+        expect:
+        invoices.each { invoice -> deleteInvoice(invoice.getId()) }
+        getAllInvoices().size() == 0
+    }
+}
