@@ -6,7 +6,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType
 import pl.futurecollars.invoicing.db.AbstractDatabaseTest
 import pl.futurecollars.invoicing.db.Database
-import pl.futurecollars.invoicing.db.sql.SqlDatabase
+import pl.futurecollars.invoicing.db.sql.InvoiceSqlDatabase
 
 import javax.sql.DataSource
 
@@ -25,7 +25,7 @@ class SqlDatabaseIntegrationTest extends AbstractDatabaseTest {
         flyway.clean()
         flyway.migrate()
 
-        new SqlDatabase(jdbcTemplate)
+        new InvoiceSqlDatabase(jdbcTemplate)
     }
 
 }

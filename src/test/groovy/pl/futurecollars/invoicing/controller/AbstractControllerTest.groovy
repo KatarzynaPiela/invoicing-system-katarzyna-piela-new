@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.web.servlet.MockMvc
 import pl.futurecollars.invoicing.model.Company
 import pl.futurecollars.invoicing.model.Invoice
-import pl.futurecollars.invoicing.service.TaxCalculatorResult
+import pl.futurecollars.invoicing.service.tax.TaxCalculatorResult
 import pl.futurecollars.invoicing.utils.JsonService
 import spock.lang.Specification
 import org.springframework.http.MediaType
@@ -23,6 +23,7 @@ import static pl.futurecollars.invoicing.helpers.TestHelpers.invoice
 class AbstractControllerTest extends Specification {
 
     static final String INVOICE_ENDPOINT = "/invoices"
+    static final String COMPANY_ENDPOINT = "/companies"
     static final String TAX_CALCULATOR_ENDPOINT = "/tax"
 
     @Autowired
@@ -33,20 +34,15 @@ class AbstractControllerTest extends Specification {
 
     def setup() {
         allInvoices.each { invoice -> deleteInvoice(invoice.id) }
+        getAllCompanies().each { company -> deleteCompany(company.id) }
     }
 
         int addInvoiceAndReturnId(Invoice invoice) {
-            Integer.valueOf(
-                    mockMvc.perform(
-                            post(INVOICE_ENDPOINT)
-                                    .content(jsonService.toJson(invoice))
-                                    .contentType(MediaType.APPLICATION_JSON)
-                    )
-                            .andExpect(status().isOk())
-                            .andReturn()
-                            .response
-                            .contentAsString
-            )
+            addAndReturnId(invoice, INVOICE_ENDPOINT)
+        }
+
+    int addCompanyAndReturnId(Company company) {
+        addAndReturnId(company, COMPANY_ENDPOINT)
         }
         List<Invoice> getAllInvoices() {
             def response = mockMvc.perform (get(INVOICE_ENDPOINT))
