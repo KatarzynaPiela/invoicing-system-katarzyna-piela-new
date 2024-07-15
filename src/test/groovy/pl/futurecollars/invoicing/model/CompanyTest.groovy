@@ -2,7 +2,7 @@ package pl.futurecollars.invoicing.model
 
 import spock.lang.Specification
 
-class CompanyTest extends Specification {
+class  CompanyTest extends Specification {
 
         def "constructor should properly initialize fields"() {
             given:

@@ -1,9 +1,9 @@
 package pl.futurecollars.invoicing.db.memory;
 
-import pl.futurecollars.invoicing.db.Database;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Company;
 import pl.futurecollars.invoicing.model.Invoice;
 

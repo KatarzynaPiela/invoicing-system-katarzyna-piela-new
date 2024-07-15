@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import pl.futurecollars.invoicing.model.WithId;
 
-
-public interface Database <T extends WithId> {
+public interface Database<T extends WithId> {
 
   long save(T item);
 
@@ -20,5 +19,5 @@ public interface Database <T extends WithId> {
   default void reset() {
     getAll().forEach(item -> delete(item.getId()));
   }
-
 }
+

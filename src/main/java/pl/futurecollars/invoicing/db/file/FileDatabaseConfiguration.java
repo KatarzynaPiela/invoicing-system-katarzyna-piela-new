@@ -3,15 +3,16 @@ package pl.futurecollars.invoicing.db.file;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import pl.futurecollars.invoicing.db.Database;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Company;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.utils.FilesService;
 import pl.futurecollars.invoicing.utils.JsonService;
+
 @Configuration
 @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "file")
 public class FileDatabaseConfiguration {

@@ -99,8 +99,10 @@ public class TaxCalculatorService {
     return invoice -> taxIdentificationNumber.equals(invoice.getBuyer().getTaxIdentificationNumber());
   }
 
-  private BigDecimal visit(Predicate<Invoice> invoicePredicate,
-                           Function<InvoiceEntry, BigDecimal> invoiceEntryToValue){
+  private BigDecimal visit(
+      Predicate<Invoice> invoicePredicate,
+      Function<InvoiceEntry, BigDecimal> invoiceEntryToValue
+  ) {
     return database.getAll().stream()
         .filter(invoicePredicate)
         .flatMap(i -> i.getEntries().stream())

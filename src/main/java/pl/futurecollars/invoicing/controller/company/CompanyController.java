@@ -11,12 +11,13 @@ import pl.futurecollars.invoicing.service.company.CompanyService;
 
 @RestController
 @AllArgsConstructor
-public class CompanyController implements CompanyApi{
+public class CompanyController implements CompanyApi {
 
   private final CompanyService companyService;
+
   @Override
   public List<Company> getAll() {
-    return (List<Company>) companyService.getAll();
+    return companyService.getAll();
   }
 
   @Override
@@ -27,7 +28,7 @@ public class CompanyController implements CompanyApi{
   @Override
   public ResponseEntity<Company> getById(@PathVariable int id) {
     return companyService.getById(id)
-        .map(company ->ResponseEntity.ok().body(company))
+        .map(company -> ResponseEntity.ok().body(company))
         .orElse(ResponseEntity.notFound().build());
   }
 
@@ -39,9 +40,10 @@ public class CompanyController implements CompanyApi{
   }
 
   @Override
-  public ResponseEntity<?> update(@PathVariable int id,@RequestBody Company company) {
+  public ResponseEntity<?> update(@PathVariable int id, @RequestBody Company company) {
     return companyService.update(id, company)
         .map(name -> ResponseEntity.noContent().build())
         .orElse(ResponseEntity.notFound().build());
   }
+
 }
