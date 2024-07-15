@@ -6,6 +6,7 @@ import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.model.InvoiceEntry
 import pl.futurecollars.invoicing.model.Vat
 import java.time.LocalDate
+
 class TestHelpers {
     static company(long id) {
         Company.builder()
@@ -16,6 +17,7 @@ class TestHelpers {
                 .healthInsurance((BigDecimal.valueOf(100) * BigDecimal.valueOf(id)).setScale(2))
                 .build()
     }
+
     static product(long id) {
         InvoiceEntry.builder()
                 .description("Programming course $id")
@@ -41,5 +43,21 @@ class TestHelpers {
                 .entries((1..id).collect({ product(it) }))
                 .build()
     }
+
+    // resetting is necessary because database query returns ids while we don't know ids in original invoice
+    static Invoice resetIds(Invoice invoice) {
+        invoice.getBuyer().id = 0
+        invoice.getSeller().id = 0
+        invoice.entries.forEach {
+            it.id = 0
+            it.expenseRelatedToCar?.id = 0
+        }
+        invoice
+    }
+
+    static List<Invoice> resetIds(List<Invoice> invoices) {
+        invoices.forEach { invoice -> resetIds(invoice) }
+    }
+
 
 }
